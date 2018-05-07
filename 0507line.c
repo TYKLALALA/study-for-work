@@ -60,6 +60,51 @@ void delete_a(int a, student *list)
 	}
 	list->last--;
 }
+//Á´Ê½²Ù×÷ÊµÏÖ¶ÑÕ»
+typedef struct snode*stack;
+struct snode
+{
+	int data;
+	struct snode *next;
+};
+stack createmptylist()
+{
+	stack node;
+	node = (stack)malloc(sizeof(struct snode));
+	node->next = NULL;
+	return node;
+}
+int isempty(stack s)
+{
+	if (s->next == NULL)
+		return 1;
+	else
+	{
+		return 0;
+	}
+}
+void push(int value,stack S)
+{
+	stack temp = (stack)malloc(sizeof(struct snode));
+	temp->data = value;
+	temp->next = S->next;
+	S->next = temp;
+
+}
+int pop(stack S)
+{
+	int value;
+	if (isempty(S))
+	{
+		printf("¿ÕÕ»\n");
+		return;
+	}
+	stack temp = S->next;
+	value = temp->data;
+	S->next = temp->next;
+	free(temp);
+	return value;
+}
 void main()
 {
 	student *list = listempty();
@@ -73,5 +118,9 @@ void main()
 		insert(1, i, list);
 	}
 	delete_a(3, list);
-	int a = 0;
+	stack list1 = createmptylist();
+	for (int i = 0; i < 10; i++)
+		push(i, list1);
+	for (int i = 0; i < 5; i++)
+		printf("%d¡¡¡¡", pop(list1));
 }
