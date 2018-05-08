@@ -105,6 +105,60 @@ int pop(stack S)
 	free(temp);
 	return value;
 }
+
+//链式队列
+struct polynode
+{
+	int coef;
+	int expon;
+	struct polynode *next;
+
+};
+typedef struct polynode *Polynomial;
+struct queue
+{
+	Polynomial front;
+	Polynomial rear;
+
+};
+struct queue* creatpoly()
+{
+	Polynomial temp;
+	temp = (Polynomial)malloc(sizeof(struct polynode));
+	temp->next = NULL;
+	struct queue*temp1 = (struct queue*)malloc(sizeof(struct queue));
+		temp1->front =NULL;
+	temp1->rear = NULL;
+	return temp1;
+}
+void addtoqueue(struct queue *Queue,int m,int n)
+{
+	Polynomial temp1 = (Polynomial)malloc(sizeof(struct polynode));
+	temp1->coef = m;
+	temp1->expon = n;
+	temp1->next = NULL;
+	if (Queue->front == NULL)//判断是否为空队列
+
+	{
+		Queue->front = temp1;
+		Queue->rear = temp1;
+		return;
+	}
+	Queue->rear->next = temp1;
+	Queue->rear = temp1;
+}
+void deleteFromqueue(struct queue *Queue)
+{
+	if (Queue->front == NULL)
+	{
+		printf("空队列\n");
+		return;
+	}
+	Polynomial temp1;
+	temp1 = Queue->front;
+	Queue->front = temp1->next;
+	free(temp1);
+}
 void main()
 {
 	student *list = listempty();
@@ -123,4 +177,15 @@ void main()
 		push(i, list1);
 	for (int i = 0; i < 5; i++)
 		printf("%d　　", pop(list1));
+	struct queue *Queue = creatpoly();
+	for (int i = 0; i < 10; i++)
+		addtoqueue(Queue, i, i);
+	for (int i = 0; i < 4; i++)
+		deleteFromqueue(Queue);
+	Polynomial p = Queue->front;
+	while (p->next!=NULL)
+	{
+		printf("%d    %d\n", p->coef, p->expon);
+		p = p->next;
+	}
 }
